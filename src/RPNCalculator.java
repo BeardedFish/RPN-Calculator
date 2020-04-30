@@ -1,8 +1,8 @@
 /*
- *	Program Description: This program is an RPN (also know as postfix) calculator that has many functions such as adding, subtracting,
- 						 dividing, squareroot, sin, cos, tan, etc. This calculator program requires ansicon to properly work.
- *	By: Darian Benam (GitHub: https://github.com/BeardedFish/)
- *	Date Created: Wednesday, April 5, 2017
+ *  Program Description: This program is an RPN (also know as postfix) calculator that has many functions such as adding, subtracting,
+ *                       dividing, squareroot, sin, cos, tan, etc. This calculator program requires ansicon to properly work.
+ *  By: Darian Benam (GitHub: https://github.com/BeardedFish/)
+ *  Date Created: Wednesday, April 5, 2017
  *  Last Updated: Wednesday, April 29, 2020
  */
 
