@@ -1,35 +1,37 @@
 /*
-	Program Description: This program is an RPN (also know as postfix) calculator that has many functions such as adding, subtracting, dividing, squareroot,
-	sin, cos, tan, etc. This calculator program requires ansicon to properly work.
-	By: Darian Benam
-	Date: 04-05-2017
-*/
+ *	Program Description: This program is an RPN (also know as postfix) calculator that has many functions such as adding, subtracting,
+ 						 dividing, squareroot, sin, cos, tan, etc. This calculator program requires ansicon to properly work.
+ *	By: Darian Benam (GitHub: https://github.com/BeardedFish/)
+ *	Date Created: Wednesday, April 5, 2017
+ *  Last Updated: Wednesday, April 29, 2020
+ */
 
 import java.util.Scanner;
 
 public class RPNCalculator
 {
-	static Scanner sc = new Scanner(System.in);
+	private static Scanner sc = new Scanner(System.in);
 	
-	static double t, x, y, z; // The 4 registers of the calculator. The variable 't' is the top register and 'x' is the total register.
+	private static double t, x, y, z; // The 4 registers of the calculator. The variable 't' is the top register and 'x' is the total register.
 	
-	static final String RED = "\033[1;31m"; // Red forecolor.
-	static final String YELLOW = "\033[1;33m"; // Yellow forecolor.
-	static final String GREEN = "\033[1;32m"; // Green forecolor.
-	static final String DEFAULT_COLOUR = "\033[0m"; // Default forecolour (light gray).
+	private static final String RED = "\033[1;31m"; // Red forecolor.
+	private static final String YELLOW = "\033[1;33m"; // Yellow forecolor.
+	private static final String GREEN = "\033[1;32m"; // Green forecolor.
+	private static final String DEFAULT_COLOUR = "\033[0m"; // Default forecolour (light gray).
 	
-	static boolean useDegreesMode = false; // NOTE: False means radians mode.
+	private static boolean useDegreesMode = false; // NOTE: False means radians mode.
 
 	/*
-		Main entry point of the application.
-	*/
-	public static void main(String[] args)
+	 *	Main entry point of the application.
+	 */
+	public static void main(final String[] args)
 	{
 		clearConsole();
 		
 		selectMode(); // Get the user to enter a mode (degrees or radians) they want the calculator to be in before they can start calulating (they can change the mode later if they choose too).
 
-		while (true)
+		boolean breakOutOfLoop = false; // States whether the nested while loop below should stop or not
+		while (!breakOutOfLoop)
 		{
 			clearConsole();
 			
@@ -39,18 +41,20 @@ public class RPNCalculator
 			
 			printRegisters();
 			
-			while (true)
+			while (!breakOutOfLoop)
 			{
 				System.out.print("Enter either a number or a command: ");
-				String input = sc.next();
+				final String input = sc.next();
 			
 				if (input.equals("exit") || input.equals("quit"))
 				{
-					return; // Returns from the main() method, causing the application to end.
+					// Stop the nested while loop
+					breakOutOfLoop = true;
+					break;
 				}
 				else
 				{
-					boolean validCommand = handleInput(input);
+					final boolean validCommand = handleInput(input);
 					
 					if (validCommand)
 					{
@@ -63,12 +67,15 @@ public class RPNCalculator
 				}
 			}
 		}
+
+		// Close the scanner
+		sc.close();
 	}
 	
 	/*
-		Prints the values of the t, x, y, z registers onto the console in color. If the x, y, z registers are equal to 0.0 then their forecolor 
-		will be red, else white. The x registers forecolor will always be green.
-	*/
+	 *	Prints the values of the t, x, y, z registers onto the console in color. If the x, y, z registers are equal to 0.0 then their forecolor 
+	 *	will be red, else white. The x registers forecolor will always be green.
+	 */
 	static void printRegisters()
 	{	
 		// NOTE: Any register (excluding x) that has a value of 0.0 will be printed in a red forecolor, else they will be printed in a light gray forecolor.
@@ -106,8 +113,8 @@ public class RPNCalculator
 	}
 	
 	/*
-		Returns the name of the mode (degrees or radians) the calculator is currently in.
-	*/
+	 *	Returns the name of the mode (degrees or radians) the calculator is currently in.
+	 */
 	static String calculatorModeName()
 	{
 		if (useDegreesMode)
@@ -119,8 +126,8 @@ public class RPNCalculator
 	}
 	
 	/*
-		A method that asks the user what mode (degrees or radians) they want the calculator to be in, setting the mode to their choice.
-	*/
+	 *	A method that asks the user what mode (degrees or radians) they want the calculator to be in, setting the mode to their choice.
+	 */
 	static void selectMode()
 	{
 		clearConsole();
@@ -133,7 +140,7 @@ public class RPNCalculator
 		{
 			System.out.print("\nAvailable Modes:\n1) Degrees\n2) Radians\n\n");
 			System.out.print("Mode: ");
-			String choice = sc.next();
+			final String choice = sc.next();
 			
 			if (choice.equals("1") || choice.equals("degrees")) // Degrees mode.
 			{
@@ -153,11 +160,11 @@ public class RPNCalculator
 	}
 	
 	/*
-		This method prints out a string that is surrounded with special box characters.
-	*/
-	static void printTitle(String title)
+	 *	This method prints out a string that is surrounded with special box characters.
+	 */
+	static void printTitle(final String title)
 	{
-		int titleLength = title.length() + 1;
+		final int titleLength = title.length() + 1;
 		System.out.print("\u2554");
 		for (int i = 0; i <= titleLength; i++)
 		{
@@ -174,8 +181,8 @@ public class RPNCalculator
 	}
 	
 	/*
-		Prints a help screen containing all the application and calulation commands for the calculator.
-	*/
+	 *	Prints a help screen containing all the application and calulation commands for the calculator.
+	 */
 	static void printHelpScreen()
 	{
 		clearConsole();
@@ -215,7 +222,7 @@ public class RPNCalculator
 		while (true)
 		{
 			System.out.print("Input: ");
-			String input = sc.next();
+			final String input = sc.next();
 			
 			if (input.equals("exit") || input.equals("return") || input.equals("back"))
 			{
@@ -225,18 +232,18 @@ public class RPNCalculator
 	}
 	
 	/*
-		Handles the users input they entered, returning a boolean if the input was handled succesfully or not. If the input is a number, then it will be 
-		added to the x register, returning true. If the input is a calculation command then it will be perform the specific calculation command the user 
-		entered, returning true. If the input is not a number or an invalid command, then it will return false.
-	*/
-	static boolean handleInput(String input)
+	 *	Handles the users input they entered, returning a boolean if the input was handled succesfully or not. If the input is a number, then it will be 
+	 *	added to the x register, returning true. If the input is a calculation command then it will be perform the specific calculation command the user 
+	 *	entered, returning true. If the input is not a number or an invalid command, then it will return false.
+	 */
+	static boolean handleInput(final String input)
 	{
-		boolean isNum = isNumber(input);
+		final boolean isNum = isNumber(input);
 		
-		double tempT = t;
-		double tempZ = z;
-		double tempY = y;
-		double tempX = x;
+		final double tempT = t;
+		final double tempZ = z;
+		final double tempY = y;
+		final double tempX = x;
 		
 		if (isNum) // The input is a number.
 		{
@@ -392,31 +399,31 @@ public class RPNCalculator
 	}
 	
 	/*
-		This method will clear all the text that is currently on the console screen.
-	*/
+	 *	This method will clear all the text that is currently on the console screen.
+	 */
 	static void clearConsole()
 	{
 		System.out.print("\033[2J");
 	}
 	
 	/*
-		Prints an error message on the console with red font.
-	*/
-	static void printErrorMessage(String errorMessage)
+	 *	Prints an error message on the console with red font.
+	 */
+	static void printErrorMessage(final String errorMessage)
 	{	
 		System.out.println(RED + "ERROR: " + errorMessage + DEFAULT_COLOUR);
 	}
 	
 	/*
-		Checks if a string value is a number, returning true if it is, and false if it is not.
-	*/
-	static boolean isNumber(String text)
+	 *	Checks if a string value is a number, returning true if it is, and false if it is not.
+	 */
+	static boolean isNumber(final String text)
 	{
 		try 
 		{
 			Double.valueOf(text);
 		} 
-		catch (NumberFormatException e) 
+		catch (final NumberFormatException e) 
 		{
 			return false;
 		}
